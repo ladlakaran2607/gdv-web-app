@@ -1,26 +1,76 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand colours */
+  --color-navy: #0A1628;
+  --color-navy-light: #12233D;
+  --color-navy-mid: #1A3052;
+  --color-gold: #C8963E;
+  --color-gold-light: #E8B85E;
+  --color-gold-pale: #F5E6C8;
+  --color-teal: #2A9D8F;
+  --color-teal-light: #3AB8A8;
+  --color-coral: #E07A5F;
+  --color-purple: #6464C8;
+
+  /* Neutral palette */
+  --color-white: #FAFBFD;
+  --color-grey-50: #F4F5F7;
+  --color-grey-100: #E8EBF0;
+  --color-grey-200: #D1D5DD;
+  --color-grey-400: #8B93A1;
+  --color-grey-600: #5A6270;
+  --color-grey-800: #2C3240;
+
+  /* Fonts */
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 4px rgba(10,22,40,0.06);
+  --shadow-md: 0 4px 16px rgba(10,22,40,0.10);
+  --shadow-lg: 0 8px 32px rgba(10,22,40,0.14);
+  --shadow-glow: 0 0 20px rgba(200,150,62,0.25);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  background-color: var(--color-grey-50);
+  color: var(--color-grey-800);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-grey-100); }
+::-webkit-scrollbar-thumb { background: var(--color-grey-200); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-grey-400); }
+
+/* Score bar animation */
+@keyframes score-fill {
+  from { width: 0%; }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Pulse animation for AI status dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(42,157,143,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(42,157,143,0); }
+}
+
+/* Shimmer for skeleton loading */
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-grey-100) 25%, var(--color-grey-50) 50%, var(--color-grey-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
