@@ -18,7 +18,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, x: 12 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+  show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export default function AIInsights({ insights }: { insights: AIInsight[] }) {
@@ -26,7 +26,7 @@ export default function AIInsights({ insights }: { insights: AIInsight[] }) {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
       className="rounded-2xl bg-white"
       style={{ boxShadow: "var(--shadow-sm)", border: "1px solid var(--color-grey-100)" }}
     >
