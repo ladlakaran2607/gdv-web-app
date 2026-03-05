@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { DonorRecord } from "@/types/donor";
 import AffinityBadge from "@/components/shared/AffinityBadge";
 import SeeBriefFlyout from "./SeeBriefFlyout";
 
+const NewDonorModal = dynamic(() => import("@/components/dashboard/NewDonorModal"), { ssr: false });
+
 export default function ProspectsTable({ donors }: { donors: DonorRecord[] }) {
   const [activeDonor, setActiveDonor] = useState<DonorRecord | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  function handleDonorAdded(result: { recordId: string; donorName: string }) {
+    window.dispatchEvent(new CustomEvent("newDonor", { detail: result }));
+  }
 
   return (
     <>
@@ -31,12 +39,26 @@ export default function ProspectsTable({ donors }: { donors: DonorRecord[] }) {
               Top prospects sorted by affinity score
             </p>
           </div>
-          <span
-            className="text-xs font-semibold px-2.5 py-1 rounded-full"
-            style={{ background: "rgba(42,157,143,0.1)", color: "var(--color-teal)" }}
-          >
-            {donors.length} prospects
-          </span>
+          <div className="flex items-center gap-2">
+            <span
+              className="text-xs font-semibold px-2.5 py-1 rounded-full"
+              style={{ background: "rgba(42,157,143,0.1)", color: "var(--color-teal)" }}
+            >
+              {donors.length} prospects
+            </span>
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+              style={{
+                background: "linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%)",
+                boxShadow: "var(--shadow-sm)",
+                cursor: "pointer",
+              }}
+            >
+              <span style={{ fontSize: 15, lineHeight: 1 }}>+</span>
+              New Donor
+            </button>
+          </div>
         </div>
 
         {/* Table */}
@@ -151,6 +173,13 @@ export default function ProspectsTable({ donors }: { donors: DonorRecord[] }) {
       </motion.div>
 
       <SeeBriefFlyout donor={activeDonor} onClose={() => setActiveDonor(null)} />
+
+      {showModal && (
+        <NewDonorModal
+          onClose={() => setShowModal(false)}
+          onSubmit={handleDonorAdded}
+        />
+      )}
     </>
   );
 }

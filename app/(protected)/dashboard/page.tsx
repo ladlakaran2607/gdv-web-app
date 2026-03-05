@@ -11,6 +11,7 @@ import AIInsights from "@/components/dashboard/AIInsights";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import WelcomeModal from "@/components/dashboard/WelcomeModal";
 import DashboardTip from "@/components/dashboard/DashboardTip";
+import RecentResearches from "@/components/dashboard/RecentResearches";
 
 export default async function DashboardPage() {
   const supabase = await createSupabase();
@@ -44,8 +45,9 @@ export default async function DashboardPage() {
           <ProspectsTable donors={topProspects} />
         </div>
 
-        {/* Right sidebar: AI insights + recent activity */}
+        {/* Right sidebar: recent researches + AI insights + recent activity */}
         <div className="flex flex-col gap-4">
+          <RecentResearches />
           <AIInsights insights={insights} />
           <RecentActivity donors={recentActivity} />
         </div>

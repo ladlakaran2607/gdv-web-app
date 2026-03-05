@@ -153,16 +153,89 @@ export default function SeeBriefFlyout({
             {/* Body */}
             <div className="flex-1 px-6 py-5 space-y-5">
 
-              {/* AI info banner */}
-              <div
-                className="flex items-start gap-3 p-4 rounded-xl"
-                style={{ background: "var(--color-gold-pale)", border: "1px solid rgba(200,150,62,0.3)" }}
-              >
-                <span className="text-lg flex-shrink-0">✨</span>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--color-navy)" }}>
-                  This brief was compiled by AI from LinkedIn, public records, and giving history. Use it to personalise your approach.
-                </p>
-              </div>
+              {/* Research progress timeline for in-progress donors */}
+              {donor.status !== "Complete" && donor.status !== "Error" && (
+                <div
+                  className="rounded-xl p-4"
+                  style={{ background: "rgba(200,150,62,0.06)", border: "1px solid rgba(200,150,62,0.2)" }}
+                >
+                  <p className="text-sm font-semibold mb-4" style={{ color: "var(--color-navy)" }}>
+                    ⏳ Research In Progress
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {[
+                      {
+                        label: "Gathering Intelligence",
+                        done: !!donor.stageGatherIntelligenceTime,
+                        active: donor.status === "Gathering Intelligence",
+                      },
+                      {
+                        label: "AI Analysis",
+                        done: donor.status === "Report Generation" || donor.status === "Complete",
+                        active: donor.status === "AI Analysis",
+                      },
+                      {
+                        label: "Report Generation",
+                        done: !!donor.stageReportGenerationTime,
+                        active: donor.status === "Report Generation",
+                      },
+                    ].map((stage, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div
+                          className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                          style={{
+                            background: stage.done
+                              ? "var(--color-teal)"
+                              : stage.active
+                              ? "var(--color-gold)"
+                              : "var(--color-grey-200)",
+                            color: stage.done || stage.active ? "#fff" : "var(--color-grey-400)",
+                            animation: stage.active ? "pulse-dot 2s infinite" : "none",
+                          }}
+                        >
+                          {stage.done ? "✓" : i + 1}
+                        </div>
+                        <span
+                          className="text-sm font-medium"
+                          style={{
+                            color: stage.done
+                              ? "var(--color-teal)"
+                              : stage.active
+                              ? "var(--color-navy)"
+                              : "var(--color-grey-400)",
+                          }}
+                        >
+                          {stage.label}
+                          {stage.active && (
+                            <span
+                              className="ml-2 text-xs font-normal italic"
+                              style={{ color: "var(--color-gold)" }}
+                            >
+                              In progress…
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs mt-4" style={{ color: "var(--color-grey-400)" }}>
+                    This panel updates automatically. Come back when research is complete to see the full brief.
+                  </p>
+                </div>
+              )}
+
+              {/* AI info banner — only for completed briefs */}
+              {donor.status === "Complete" && (
+                <div
+                  className="flex items-start gap-3 p-4 rounded-xl"
+                  style={{ background: "var(--color-gold-pale)", border: "1px solid rgba(200,150,62,0.3)" }}
+                >
+                  <span className="text-lg flex-shrink-0">✨</span>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-navy)" }}>
+                    This brief was compiled by AI from LinkedIn, public records, and giving history. Use it to personalise your approach.
+                  </p>
+                </div>
+              )}
 
               {/* Score grid */}
               <div className="grid grid-cols-3 gap-3">

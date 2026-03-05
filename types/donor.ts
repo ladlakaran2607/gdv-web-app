@@ -8,7 +8,7 @@ export interface DonorRecord {
   donationHistory: string;
   donationFrequency: string;
   donatedInLastYear: boolean;
-  status: "Complete" | "Processing" | "Gathering Intelligence" | "Error" | "";
+  status: "Complete" | "AI Analysis" | "Gathering Intelligence" | "Report Generation" | "New" | "Error" | "";
   processingStarted: string;
   processingCompleted: string;
   researchReport: string; // PDF URL from Airtable attachments

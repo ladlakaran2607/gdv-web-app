@@ -42,11 +42,27 @@ export async function fetchAllRecords(filterFormula?: string): Promise<AirtableR
   return records;
 }
 
+export async function createRecord(fields: Record<string, unknown>): Promise<AirtableRecord> {
+  const url = `${BASE_URL}/${BASE_ID}/${encodeURIComponent(TABLE)}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ fields }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Airtable create failed (${res.status}): ${err}`);
+  }
+
+  return res.json();
+}
+
 export async function fetchRecord(recordId: string): Promise<AirtableRecord> {
   const url = `${BASE_URL}/${BASE_ID}/${encodeURIComponent(TABLE)}/${recordId}`;
   const res = await fetch(url, {
     headers: headers(),
-    next: { revalidate: 60 },
+    cache: "no-store",
   });
 
   if (!res.ok) {

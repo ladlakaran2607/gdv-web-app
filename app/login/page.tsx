@@ -48,10 +48,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: "linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-mid) 100%)" }}
-    >
+    <div className="min-h-screen flex items-center justify-center p-4">
       {/* Background decoration */}
       <div
         className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 pointer-events-none"
