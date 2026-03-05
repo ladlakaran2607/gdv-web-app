@@ -171,7 +171,7 @@ export default function SeeBriefFlyout({
                       },
                       {
                         label: "AI Analysis",
-                        done: donor.status === "Report Generation" || donor.status === "Complete",
+                        done: donor.status === "Report Generation",
                         active: donor.status === "AI Analysis",
                       },
                       {
