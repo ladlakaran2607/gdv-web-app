@@ -146,8 +146,6 @@ export default function RecentResearches() {
     }
   }
 
-  if (researches.length === 0) return null;
-
   return (
     <>
       <div
@@ -175,7 +173,11 @@ export default function RecentResearches() {
         </div>
 
         <div className="p-5 flex flex-col gap-3">
-          {researches.map((r) => (
+          {researches.length === 0 ? (
+            <p className="text-sm text-center py-3" style={{ color: "var(--color-grey-400)" }}>
+              No recent research activity yet.
+            </p>
+          ) : researches.map((r) => (
             <div key={r.id} className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2.5 min-w-0 flex-1">
                 <span
