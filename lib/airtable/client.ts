@@ -26,7 +26,7 @@ export async function fetchAllRecords(filterFormula?: string): Promise<AirtableR
     const url = `${BASE_URL}/${BASE_ID}/${encodeURIComponent(TABLE)}?${params}`;
     const res = await fetch(url, {
       headers: headers(),
-      next: { revalidate: 300 }, // cache 5 min
+      next: { revalidate: 3600 }, // cache 1 hour
     });
 
     if (!res.ok) {
