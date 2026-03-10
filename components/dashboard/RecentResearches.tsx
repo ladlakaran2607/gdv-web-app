@@ -95,7 +95,7 @@ export default function RecentResearches() {
 
   useEffect(() => { fetchRecent(); }, [fetchRecent]);
   useEffect(() => {
-    const interval = setInterval(fetchRecent, 60_000);
+    const interval = setInterval(fetchRecent, 15_000);
     return () => clearInterval(interval);
   }, [fetchRecent]);
 
