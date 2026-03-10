@@ -17,8 +17,13 @@ export default async function DashboardPage() {
   const supabase = await createSupabase();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Fetch all data in parallel
-  const donors = await getAllDonors();
+  // Fetch all data — graceful fallback if Airtable is rate-limited or unavailable
+  let donors: Awaited<ReturnType<typeof getAllDonors>> = [];
+  try {
+    donors = await getAllDonors();
+  } catch {
+    // Rate limited (429) or network error — render with empty data rather than crashing
+  }
 
   const kpis = computeKPIs(donors);
   const topProspects = getTopProspects(donors, 5);
