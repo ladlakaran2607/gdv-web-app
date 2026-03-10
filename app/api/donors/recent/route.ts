@@ -9,14 +9,10 @@ export async function GET() {
   try {
     const params = new URLSearchParams({
       filterByFormula: "NOT({Type} = 'Soft Delete')",
-      "sort[0][field]": "Created Time",
-      "sort[0][direction]": "desc",
-      pageSize: "5",
+      pageSize: "100",
       "fields[]": "Donor Name",
     });
-    // Add Status field
     params.append("fields[]", "Status");
-    params.append("fields[]", "Created Time");
 
     const url = `${BASE_URL}/${BASE_ID}/${encodeURIComponent(TABLE)}?${params}`;
     const res = await fetch(url, {
@@ -33,12 +29,15 @@ export async function GET() {
     }
 
     const data = await res.json();
-    const records = data.records.map((r: { id: string; fields: Record<string, string> }) => ({
-      id: r.id,
-      name: r.fields["Donor Name"] ?? "Unknown",
-      status: r.fields["Status"] ?? "New",
-      createdAt: r.fields["Create Time"] ?? null,
-    }));
+    const records = (data.records as { id: string; createdTime: string; fields: Record<string, string> }[])
+      .map((r) => ({
+        id: r.id,
+        name: r.fields["Donor Name"] ?? "Unknown",
+        status: r.fields["Status"] ?? "New",
+        createdAt: r.createdTime,
+      }))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 5);
 
     return NextResponse.json(records);
   } catch (err) {
